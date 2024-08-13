@@ -20,6 +20,14 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    /*################################################################################*/
+    @GetMapping("/authors/{author_id}")
+    public ResponseEntity<?> getBooksByAuthor(@PathVariable Long author_id) {
+        return bookService.getBooksByAuthor(author_id);
+    }
+
+    /*################################################################################*/
+
     @GetMapping
     public List<BookDTO> getAllBooks() {
         return bookService.getAllBooks();

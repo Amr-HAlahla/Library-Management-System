@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +32,23 @@ public class BookService {
         this.publisherRepository = publisherRepository;
     }
 
+    /*############################### NEW OPERATIONS #######################################*/
+    /* Get books by author id*/
+    public ResponseEntity<?> getBooksByAuthor(Long authorId) {
+        List<Book> bookList = bookRepository.findByAuthorId(authorId);
+        if (bookList.isEmpty()) {
+            return ResponseEntity.ok("No books for the author with id - " + authorId);
+        }
+        // Convert list of Book to list of BookDTO using stream
+        List<BookDTO> bookDTOList = bookList.stream()
+                .map(this::convertToDTO)  // Convert each Book to BookDTO
+                .collect(Collectors.toList());  // Collect the results into a list
+
+        return ResponseEntity.ok(bookDTOList);
+    }
+
+    /*######################################################################*/
+    /*############################## CRUD OPERATIONS ########################################*/
     public List<BookDTO> getAllBooks() {
         return bookRepository.findAll().stream()
                 .map(this::convertToDTO)
@@ -113,4 +131,5 @@ public class BookService {
         PublisherDTO publisherDTO = new PublisherDTO(book.getPublisher().getId(), book.getPublisher().getName(), book.getPublisher().getEstablishedDate());
         return new BookDTO(book.getId(), book.getTitle(), book.getIsbn(), book.getPublishedDate(), book.getPages(), authorDTO, publisherDTO);
     }
+    /*######################################################################*/
 }
