@@ -1,0 +1,59 @@
+
+Spring Boot Project: Library Management System
+
+## Overview
+You are required to build a REST API for a Library Management System using Spring Boot. The system will manage Books, Authors, and Publishers with basic CRUD operations, along with some additional operations. The API should be built following the Repository, Service, and Controller architecture patterns. The project will also utilize Spring Data JPA with Criteria Queries (Specifications) for advanced querying.
+
+## Requirements
+
+### Entities and Relationships
+
+1. **Book Entity**
+   - Fields: id, title, isbn, publishedDate, pages
+   - Relationships: 
+     - Many-to-One with Author
+     - Many-to-One with Publisher
+
+2. **Author Entity**
+   - Fields: id, name, birthDate
+   - Relationships:
+     - One-to-Many with Book
+
+3. **Publisher Entity**
+   - Fields: id, name, establishedDate
+   - Relationships:
+     - One-to-Many with Book
+
+### Table Auto-Creation
+The database tables should be created automatically based on the entities when the application is run. Use the following properties in `application.properties` or `application.yml`:
+
+```properties
+spring.jpa.hibernate.ddl-auto=update
+spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.jpa.show-sql=true
+```
+
+### CRUD Operations
+- Implement basic CRUD operations for Books, Authors, and Publishers.
+- Ensure that the appropriate relationships are managed when performing these operations.
+
+### Additional Operations
+- Find all books by a specific author.
+- Find all books published by a specific publisher.
+- Count the number of books each author has written.
+- Advanced searching using criteria queries (Specifications) on book details.
+
+### Project Structure
+- **Entities**: Implement using Lombok annotations for boilerplate code reduction. Use JPA annotations to define relationships.
+- **Repository Layer**: Use Spring Data JPA to handle CRUD operations.
+- **Service Layer**: Implement business logic, and handle complex operations.
+- **Controller Layer**: Expose REST endpoints for CRUD and additional operations.
+- **Specifications**: Use Spring Data JPA Specifications (Criteria Queries) for advanced querying.
+
+## Task Deliverables
+- Implement the entities with the necessary fields and relationships.
+- Create repositories, services, and controllers for the CRUD operations and additional operations.
+- Implement the specifications for advanced querying.
+- Ensure that the tables are automatically created in the database when the application is run.
