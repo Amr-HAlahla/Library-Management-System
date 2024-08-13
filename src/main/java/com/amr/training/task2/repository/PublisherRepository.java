@@ -13,7 +13,7 @@ public interface PublisherRepository extends JpaRepository<Publisher, Long> {
     List<Publisher> findByEstablishedDateAfter(LocalDate date);
 
     @Query("SELECT p FROM Publisher p JOIN p.books b GROUP BY p.id HAVING COUNT(b) = :bookCount")
-    List<Publisher> findByBooksSize(@Param("bookCount") int bookCount);
+    List<Publisher> findByBooksCount(@Param("bookCount") int bookCount);
 
     long count();
 }

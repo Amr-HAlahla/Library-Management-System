@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -19,6 +20,25 @@ public class PublisherController {
     public PublisherController(PublisherService publisherService) {
         this.publisherService = publisherService;
     }
+
+
+    /*##############################################################################*/
+    @GetMapping("/count")
+    public ResponseEntity<Long> getNumberOfPublishers() {
+        return publisherService.getNumberOfPublishers();
+    }
+
+    @GetMapping("/books-count")
+    public ResponseEntity<?> getPublisherWithBooksCount(@RequestParam("count") int count) {
+        return publisherService.getPublisherWithBooksCount(count);
+    }
+
+    @GetMapping("/published-after")
+    public ResponseEntity<?> getPublishersEstablishedAfterDate(@RequestParam("date") LocalDate date) {
+        return publisherService.getPublishersEstablishedAfterDate(date);
+    }
+
+    /*##############################################################################*/
 
     @GetMapping
     public List<PublisherDTO> getAllPublishers() {
