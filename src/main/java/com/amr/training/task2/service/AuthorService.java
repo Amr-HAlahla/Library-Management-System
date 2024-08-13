@@ -1,7 +1,9 @@
 package com.amr.training.task2.service;
 
 import com.amr.training.task2.dto.AuthorDTO;
+import com.amr.training.task2.dto.BookDTO;
 import com.amr.training.task2.entity.Author;
+import com.amr.training.task2.entity.Book;
 import com.amr.training.task2.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,37 @@ public class AuthorService {
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
+
+    /*######################################################################*/
+    // Get Authors have books greater than a certain amount.
+    public ResponseEntity<?> getAuthorByBooksCountGreater(int count) {
+        List<Author> authorList = authorRepository.findByBooksCountGreaterThan(count);
+        if (authorList.isEmpty()) {
+            return ResponseEntity.ok("No Authors with number of books greater than - " + count);
+        }
+        // Convert list of Book to list of BookDTO using stream
+        List<AuthorDTO> authorDTOS = authorList.stream()
+                .map(this::convertToDTO)  // Convert each Book to BookDTO
+                .collect(Collectors.toList());  // Collect the results into a list
+
+        return ResponseEntity.ok(authorDTOS);
+    }
+
+    // Get Authors have Books with number of pages greater than a certain number.
+    public ResponseEntity<?> getAuthorByBookSizeGreater(int bookSize) {
+        List<Author> authorList = authorRepository.findAuthorsWithBooksHavingMoreThanPages(bookSize);
+        if (authorList.isEmpty()) {
+            return ResponseEntity.ok("No Authors with Book size greater than - " + bookSize);
+        }
+        // Convert list of Book to list of BookDTO using stream
+        List<AuthorDTO> authorDTOS = authorList.stream()
+                .map(this::convertToDTO)  // Convert each Book to BookDTO
+                .collect(Collectors.toList());  // Collect the results into a list
+
+        return ResponseEntity.ok(authorDTOS);
+    }
+    /*######################################################################*/
+
 
     public List<AuthorDTO> getAllAuthors() {
         return authorRepository.findAll().stream()

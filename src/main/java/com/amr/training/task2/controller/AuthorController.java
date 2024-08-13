@@ -20,6 +20,19 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
+    /*######################################################################*/
+    @GetMapping("/books-greater-than")
+    public ResponseEntity<?> getAuthorByBookSizeGreater(@RequestParam("size") int size) {
+        return authorService.getAuthorByBookSizeGreater(size);
+    }
+
+    @GetMapping("/books-more-than")
+    public ResponseEntity<?> getAuthorByBooksCountGreater(@RequestParam("count") int count) {
+        return authorService.getAuthorByBooksCountGreater(count);
+    }
+    /*######################################################################*/
+
+
     @GetMapping
     public List<AuthorDTO> getAllAuthors() {
         return authorService.getAllAuthors();
