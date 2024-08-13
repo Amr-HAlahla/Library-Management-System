@@ -69,12 +69,24 @@ public class BookService {
     }
 
     public ResponseEntity<?> updateBook(Long id, Book bookDetails) {
-        Optional<Book> existingBook = bookRepository.findById(id);
-        if (existingBook.isEmpty()) {
+        // Check if the book exists
+        Optional<Book> existingBookOpt = bookRepository.findById(id);
+        if (existingBookOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Book not found with id: " + id);
         }
 
-        Book book = existingBook.get();
+        // Check if the author exists
+        if (!authorRepository.existsById(bookDetails.getAuthor().getId())) {
+            return ResponseEntity.badRequest().body("Invalid Author Id: " + bookDetails.getAuthor().getId());
+        }
+
+        // Check if the publisher exists
+        if (!publisherRepository.existsById(bookDetails.getPublisher().getId())) {
+            return ResponseEntity.badRequest().body("Invalid Publisher Id: " + bookDetails.getPublisher().getId());
+        }
+
+        // Update the existing book
+        Book book = existingBookOpt.get();
         book.setTitle(bookDetails.getTitle());
         book.setIsbn(bookDetails.getIsbn());
         book.setPublishedDate(bookDetails.getPublishedDate());
@@ -85,6 +97,7 @@ public class BookService {
         Book updatedBook = bookRepository.save(book);
         return ResponseEntity.ok(convertToDTO(updatedBook));
     }
+
 
     public ResponseEntity<String> deleteBook(Long id) {
         Optional<Book> existingBook = bookRepository.findById(id);
