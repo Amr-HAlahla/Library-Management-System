@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -21,11 +22,20 @@ public class BookController {
     }
 
     /*################################################################################*/
+    @GetMapping("/published-after")
+    public ResponseEntity<?> getBooksPublishedAfterDate(@RequestParam("date") LocalDate date) {
+        return bookService.getBooksPublishedAfterDate(date);
+    }
+
     @GetMapping("/authors/{author_id}")
     public ResponseEntity<?> getBooksByAuthor(@PathVariable Long author_id) {
         return bookService.getBooksByAuthor(author_id);
     }
 
+    @GetMapping("/publishers/{publisher_id}")
+    public ResponseEntity<?> getBooksByPublisher(@PathVariable Long publisher_id) {
+        return bookService.getBooksByPublisher(publisher_id);
+    }
     /*################################################################################*/
 
     @GetMapping

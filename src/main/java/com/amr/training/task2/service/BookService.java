@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,34 @@ public class BookService {
         List<Book> bookList = bookRepository.findByAuthorId(authorId);
         if (bookList.isEmpty()) {
             return ResponseEntity.ok("No books for the author with id - " + authorId);
+        }
+        // Convert list of Book to list of BookDTO using stream
+        List<BookDTO> bookDTOList = bookList.stream()
+                .map(this::convertToDTO)  // Convert each Book to BookDTO
+                .collect(Collectors.toList());  // Collect the results into a list
+
+        return ResponseEntity.ok(bookDTOList);
+    }
+
+    /*Get Books by Publisher id*/
+    public ResponseEntity<?> getBooksByPublisher(Long publisherId) {
+        List<Book> bookList = bookRepository.findByPublisherId(publisherId);
+        if (bookList.isEmpty()) {
+            return ResponseEntity.ok("No books for the publisher with id - " + publisherId);
+        }
+        // Convert list of Book to list of BookDTO using stream
+        List<BookDTO> bookDTOList = bookList.stream()
+                .map(this::convertToDTO)  // Convert each Book to BookDTO
+                .collect(Collectors.toList());  // Collect the results into a list
+
+        return ResponseEntity.ok(bookDTOList);
+    }
+
+    /*Get Books published after a certain date*/
+    public ResponseEntity<?> getBooksPublishedAfterDate(LocalDate date) {
+        List<Book> bookList = bookRepository.findByPublishedDateAfter(date);
+        if (bookList.isEmpty()) {
+            return ResponseEntity.ok("No books published after - " + date);
         }
         // Convert list of Book to list of BookDTO using stream
         List<BookDTO> bookDTOList = bookList.stream()
