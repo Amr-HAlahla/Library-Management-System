@@ -76,6 +76,26 @@ public class BookService {
         return ResponseEntity.ok(bookDTOList);
     }
 
+    /*Count Books created by an author*/
+    public ResponseEntity<?> countBooksByAuthor(Long authorId) {
+        // Check the existence of the author.
+        if (!authorRepository.existsById(authorId)) {
+            return ResponseEntity.badRequest().body("Invalid Author Id: " + authorId);
+        }
+        Long numberOfBooks = bookRepository.countBookByAuthorId(authorId);
+        return ResponseEntity.ok(numberOfBooks);
+    }
+
+    /*Count Books by publisher*/
+    public ResponseEntity<?> countBooksByPublisher(Long publisherId) {
+        // Check the existence of the author.
+        if (!publisherRepository.existsById(publisherId)) {
+            return ResponseEntity.badRequest().body("Invalid Publisher Id: " + publisherId);
+        }
+        Long numberOfBooks = bookRepository.countBookByPublisherId(publisherId);
+        return ResponseEntity.ok(numberOfBooks);
+    }
+
     /*######################################################################*/
     /*############################## CRUD OPERATIONS ########################################*/
     public List<BookDTO> getAllBooks() {

@@ -22,6 +22,16 @@ public class BookController {
     }
 
     /*################################################################################*/
+    @GetMapping("/count-by-publisher/{publisher_id}")
+    public ResponseEntity<?> countBooksByPublisher(@PathVariable Long publisher_id) {
+        return bookService.countBooksByPublisher(publisher_id);
+    }
+
+    @GetMapping("/count-by-author/{author_id}")
+    public ResponseEntity<?> countBooksByAuthor(@PathVariable Long author_id) {
+        return bookService.countBooksByAuthor(author_id);
+    }
+
     @GetMapping("/published-after")
     public ResponseEntity<?> getBooksPublishedAfterDate(@RequestParam("date") LocalDate date) {
         return bookService.getBooksPublishedAfterDate(date);
