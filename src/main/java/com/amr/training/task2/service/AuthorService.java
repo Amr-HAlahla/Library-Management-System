@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +25,21 @@ public class AuthorService {
     }
 
     /*######################################################################*/
+    /*Find Authors with Birthdate in a range*/
+    public ResponseEntity<?> getAuthorWithBirthDateBetween(
+            LocalDate startDate, LocalDate endDate) {
+        List<Author> authorList = authorRepository.findByBirthDateBetween(startDate, endDate);
+        if (authorList.isEmpty()) {
+            return ResponseEntity.ok("No Authors with BirthDate between " + startDate + " - " + endDate);
+        }
+        // Convert list of Book to list of BookDTO using stream
+        List<AuthorDTO> authorDTOS = authorList.stream()
+                .map(this::convertToDTO)  // Convert each Book to BookDTO
+                .collect(Collectors.toList());  // Collect the results into a list
+
+        return ResponseEntity.ok(authorDTOS);
+    }
+
     // Get Authors have books greater than a certain amount.
     public ResponseEntity<?> getAuthorByBooksCountGreater(int count) {
         List<Author> authorList = authorRepository.findByBooksCountGreaterThan(count);

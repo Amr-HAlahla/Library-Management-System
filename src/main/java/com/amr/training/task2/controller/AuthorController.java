@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,12 @@ public class AuthorController {
     }
 
     /*######################################################################*/
+    @GetMapping("/birthdate-between")
+    public ResponseEntity<?> getAuthorWithBirthDateBetween(
+            @RequestParam("start_date") LocalDate startDate, @RequestParam("end_date") LocalDate endDate) {
+        return authorService.getAuthorWithBirthDateBetween(startDate, endDate);
+    }
+
     @GetMapping("/books-greater-than")
     public ResponseEntity<?> getAuthorByBookSizeGreater(@RequestParam("size") int size) {
         return authorService.getAuthorByBookSizeGreater(size);
