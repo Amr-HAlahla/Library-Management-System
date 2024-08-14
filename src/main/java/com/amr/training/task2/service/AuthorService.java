@@ -28,6 +28,20 @@ public class AuthorService {
 
     /*######################################################################*/
     /*############# Using Specifications ###################################*/
+    public ResponseEntity<?> hasBooksPublishedAfter(LocalDate date) {
+        Specification<Author> spec = AuthorSpecification.hasBooksPublishedAfter(date);
+        List<Author> authorList = authorRepository.findAll(spec);
+        if (authorList.isEmpty()) {
+            return ResponseEntity.ok("No Authors have books published after - " + date);
+        }
+        // Convert list of Book to list of BookDTO using stream
+        List<AuthorDTO> authorDTOS = authorList.stream()
+                .map(this::convertToDTO)  // Convert each Book to BookDTO
+                .collect(Collectors.toList());  // Collect the results into a list
+
+        return ResponseEntity.ok(authorDTOS);
+    }
+
     public ResponseEntity<?> authorsBornBefore(LocalDate date) {
         Specification<Author> spec = AuthorSpecification.bornBefore(date);
         List<Author> authorList = authorRepository.findAll(spec);
@@ -55,6 +69,7 @@ public class AuthorService {
 
         return ResponseEntity.ok(authorDTOS);
     }
+    /*######################################################################*/
 
     /*######################################################################*/
     /*Find Authors with Birthdate in a range*/

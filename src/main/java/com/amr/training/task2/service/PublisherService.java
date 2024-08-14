@@ -1,11 +1,11 @@
 package com.amr.training.task2.service;
 
-import com.amr.training.task2.dto.BookDTO;
 import com.amr.training.task2.dto.PublisherDTO;
-import com.amr.training.task2.entity.Book;
 import com.amr.training.task2.entity.Publisher;
 import com.amr.training.task2.repository.PublisherRepository;
+import com.amr.training.task2.specification.PublisherSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +20,39 @@ public class PublisherService {
     private final PublisherRepository publisherRepository;
 
     @Autowired
-    public PublisherService(PublisherRepository publisherRepository) {
+    public PublisherService(PublisherRepository publisherRepository, BookService bookService) {
         this.publisherRepository = publisherRepository;
     }
 
+    /*##############################################################################*/
+    /*############################ SPECIFICATIONS ##################################*/
+    public ResponseEntity<?> findPublishersWithBookCount(int  bookCount) {
+        Specification<Publisher> spec = PublisherSpecifications.hasBookCount(bookCount);
+        List<Publisher> publishers = publisherRepository.findAll(spec);
+        if (publishers.isEmpty()) {
+            return ResponseEntity.ok("No publishers have published `" + bookCount + "` books exactly!");
+        }
+        List<PublisherDTO> publisherDTOS = publishers.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(publisherDTOS);
+    }
+
+    public ResponseEntity<?> establishedAfter(LocalDate date) {
+        Specification<Publisher> spec = PublisherSpecifications.establishedAfter(date);
+        List<Publisher> publishers = publisherRepository.findAll(spec);
+        if (publishers.isEmpty()) {
+            return ResponseEntity.ok("No publishers established after - " + date);
+        }
+        List<PublisherDTO> publisherDTOS = publishers.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(publisherDTOS);
+    }
+
+    /*##############################################################################*/
     /*##############################################################################*/
     public ResponseEntity<Long> getNumberOfPublishers() {
         return ResponseEntity.ok(publisherRepository.count());

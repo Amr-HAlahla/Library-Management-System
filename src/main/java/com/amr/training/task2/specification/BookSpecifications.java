@@ -12,6 +12,14 @@ public class BookSpecifications {
                 criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + word.toLowerCase() + "%"));
     }
 
+    public static Specification<Book> hasAuthorAndPublisher(Long authorId, Long publisherId) {
+        return ((root, query, criteriaBuilder) ->
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("author").get("id"), authorId),
+                        criteriaBuilder.equal(root.get("publisher").get("id"), publisherId)
+                ));
+    }
+
     public static Specification<Book> hasTitle(String title) {
         return (root, query, cb) -> cb.like(root.get("title"), "%" + title + "%");
     }

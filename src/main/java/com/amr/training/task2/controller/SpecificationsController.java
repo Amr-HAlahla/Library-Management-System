@@ -30,6 +30,27 @@ public class SpecificationsController {
         this.publisherService = publisherService;
     }
 
+    @GetMapping("/publishers/with-books-count")
+    public ResponseEntity<?> getPublishersWithNumberOfBooks(@RequestParam("count") int count) {
+        return publisherService.findPublishersWithBookCount(count);
+    }
+
+    @GetMapping("authors/books-published-after")
+    public ResponseEntity<?> getAuthorsWithBooksPublishedAfter(@RequestParam("date") LocalDate date) {
+        return authorService.hasBooksPublishedAfter(date);
+    }
+
+    @GetMapping("/books/author-and-publisher")
+    public ResponseEntity<?> getBooksByAuthorAndPublisher(
+            @RequestParam("author_id") Long authorId, @RequestParam("publisher_id") Long publisherId) {
+        return bookService.hasAuthorAndPublisher(authorId, publisherId);
+    }
+
+    @GetMapping("/publishers/established-after")
+    public ResponseEntity<?> publishersEstablishedAfter(@RequestParam("date") LocalDate date) {
+        return publisherService.establishedAfter(date);
+    }
+
     @GetMapping("/authors/born-before")
     public ResponseEntity<?> authorsBornBefore(@RequestParam("date") LocalDate date) {
         return authorService.authorsBornBefore(date);

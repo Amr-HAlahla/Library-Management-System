@@ -36,6 +36,20 @@ public class BookService {
     }
 
     /*############################### Specifications #######################################*/
+
+    public ResponseEntity<?> hasAuthorAndPublisher(Long authorId, Long publisherId) {
+        Specification<Book> spec = BookSpecifications.hasAuthorAndPublisher(authorId, publisherId);
+        List<Book> bookList = bookRepository.findAll(spec);
+        if (bookList.isEmpty()) {
+            return ResponseEntity.ok("No Books with Author id = " + authorId +
+                    " and Publisher id = " + publisherId);
+        }
+        List<BookDTO> bookDTOS = bookList.stream()
+                .map(this::convertToDTO)
+                .toList();
+        return ResponseEntity.ok(bookDTOS);
+    }
+
     public ResponseEntity<?> BooksTitleContains(String word) {
         Specification<Book> spec = BookSpecifications.titleContains(word);
         List<Book> bookList = bookRepository.findAll(spec);
