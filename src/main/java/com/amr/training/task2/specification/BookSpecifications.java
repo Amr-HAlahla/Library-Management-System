@@ -7,6 +7,11 @@ import java.time.LocalDate;
 
 public class BookSpecifications {
 
+    public static Specification<Book> titleContains(String word) {
+        return ((root, query, criteriaBuilder) ->
+                criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + word.toLowerCase() + "%"));
+    }
+
     public static Specification<Book> hasTitle(String title) {
         return (root, query, cb) -> cb.like(root.get("title"), "%" + title + "%");
     }

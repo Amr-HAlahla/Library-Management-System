@@ -5,7 +5,9 @@ import com.amr.training.task2.dto.BookDTO;
 import com.amr.training.task2.entity.Author;
 import com.amr.training.task2.entity.Book;
 import com.amr.training.task2.repository.AuthorRepository;
+import com.amr.training.task2.specification.AuthorSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,23 @@ public class AuthorService {
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
+
+    /*######################################################################*/
+    /*############# Using Specifications ###################################*/
+    public ResponseEntity<?> getAuthorsWithBooksHavingPagesGreaterThan(int pages) {
+        Specification<Author> specification = AuthorSpecification.hasBooksWithPagesGreaterThan(pages);
+        List<Author> authorList = authorRepository.findAll(specification);
+        if (authorList.isEmpty()) {
+            return ResponseEntity.ok("No Authors have Books with pages greater than - " + pages);
+        }
+        // Convert list of Book to list of BookDTO using stream
+        List<AuthorDTO> authorDTOS = authorList.stream()
+                .map(this::convertToDTO)  // Convert each Book to BookDTO
+                .collect(Collectors.toList());  // Collect the results into a list
+
+        return ResponseEntity.ok(authorDTOS);
+    }
+
 
     /*######################################################################*/
     /*Find Authors with Birthdate in a range*/

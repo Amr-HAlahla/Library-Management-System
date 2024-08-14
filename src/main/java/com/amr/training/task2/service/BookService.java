@@ -9,7 +9,9 @@ import com.amr.training.task2.entity.Publisher;
 import com.amr.training.task2.repository.AuthorRepository;
 import com.amr.training.task2.repository.BookRepository;
 import com.amr.training.task2.repository.PublisherRepository;
+import com.amr.training.task2.specification.BookSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,21 @@ public class BookService {
         this.authorRepository = authorRepository;
         this.publisherRepository = publisherRepository;
     }
+
+    /*############################### Specifications #######################################*/
+    public ResponseEntity<?> BooksTitleContains(String word) {
+        Specification<Book> spec = BookSpecifications.titleContains(word);
+        List<Book> bookList = bookRepository.findAll(spec);
+        if (bookList.isEmpty()) {
+            return ResponseEntity.ok("No books with title contains the pattern - " + word);
+        }
+        List<BookDTO> bookDTOS = bookList.stream()
+                .map(this::convertToDTO)
+                .toList();
+        return ResponseEntity.ok(bookDTOS);
+    }
+
+    /*######################################################################################*/
 
     /*############################### NEW OPERATIONS #######################################*/
     /* Get books by author id*/
