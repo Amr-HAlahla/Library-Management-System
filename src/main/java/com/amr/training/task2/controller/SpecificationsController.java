@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/specifications")
 public class SpecificationsController {
@@ -28,12 +30,17 @@ public class SpecificationsController {
         this.publisherService = publisherService;
     }
 
-    @GetMapping("/title-contains")
+    @GetMapping("/authors/born-before")
+    public ResponseEntity<?> authorsBornBefore(@RequestParam("date") LocalDate date) {
+        return authorService.authorsBornBefore(date);
+    }
+
+    @GetMapping("/books/title-contains")
     public ResponseEntity<?> BooksTitleContains(@RequestParam("pattern") String pattern) {
         return bookService.BooksTitleContains(pattern);
     }
 
-    @GetMapping("/with-books-more-than-pages")
+    @GetMapping("/authors/with-books-more-than-pages")
     public ResponseEntity<?> getAuthorsWithBooksHavingPagesGreaterThan(@RequestParam("pages") int pages) {
         return ResponseEntity.ok(authorService.getAuthorsWithBooksHavingPagesGreaterThan(pages));
     }
