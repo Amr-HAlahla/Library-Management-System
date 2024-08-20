@@ -1,9 +1,7 @@
 package com.amr.training.task2.service;
 
 import com.amr.training.task2.dto.AuthorDTO;
-import com.amr.training.task2.dto.BookDTO;
 import com.amr.training.task2.entity.Author;
-import com.amr.training.task2.entity.Book;
 import com.amr.training.task2.repository.AuthorRepository;
 import com.amr.training.task2.specification.AuthorSpecification;
 import org.springframework.beans.factory.annotation.Autowired;

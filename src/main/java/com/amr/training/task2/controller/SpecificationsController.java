@@ -5,7 +5,6 @@ import com.amr.training.task2.service.AuthorService;
 import com.amr.training.task2.service.BookService;
 import com.amr.training.task2.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

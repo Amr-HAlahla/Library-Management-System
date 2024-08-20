@@ -4,8 +4,6 @@ import com.amr.training.task2.dto.BookDTO;
 import com.amr.training.task2.dto.AuthorDTO;
 import com.amr.training.task2.dto.PublisherDTO;
 import com.amr.training.task2.entity.Book;
-import com.amr.training.task2.entity.Author;
-import com.amr.training.task2.entity.Publisher;
 import com.amr.training.task2.repository.AuthorRepository;
 import com.amr.training.task2.repository.BookRepository;
 import com.amr.training.task2.repository.PublisherRepository;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
