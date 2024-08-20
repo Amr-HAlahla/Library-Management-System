@@ -45,8 +45,8 @@ Ensure you have the following installed:
    ```bash
    git clone https://github.com/your-username/library-management-system.git
    cd library-management-system
-  ``
-
+   ```
+  
 2. **Configure the Database:**
 
    Update the `application.properties` file in the `src/main/resources` directory with your database details:
